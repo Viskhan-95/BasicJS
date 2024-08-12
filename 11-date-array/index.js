@@ -29,7 +29,7 @@ const isValidDate = date => {
         
         if(isNaN(day) || isNaN(month) || isNaN(year)) return false;
         if(daysInMonth < 1 || day > daysInMonth[month - 1]) return false;
-        if(year.length == 4 ) return false;
+        if(year.toString().length != 4 ) return false;
     
         return true;
 }
