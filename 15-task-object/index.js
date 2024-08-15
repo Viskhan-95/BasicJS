@@ -16,16 +16,11 @@ const toDo = {
         return this.toDoList.find(obj => obj.title == title)
     },
 
-    add: function(title, priority) {
-        if(this.findByTitle(title)) return 'Задача уже существует';
-        if(this.findByPriority(priority)) return 'Такой приоритет существует';
+    add: function(newTask) {
+        if(this.findByTitle(newTask.title)) return 'Задача уже существует';
+        if(this.findByPriority(newTask.priority)) return 'Такой приоритет существует';
 
-        countId++;
-        this.toDoList.push({
-            title,
-            id: countId,
-            priority
-        });
+        this.toDoList.push(newTask);
 
         return 'Задача добавлена';
     },
@@ -37,15 +32,15 @@ const toDo = {
         return 'Задача удалена'
     },
 
-    update: function(title, priority, id) {
-        if(!this.findById(id)) return 'Задача не найдена';
-        if(this.findByTitle(title)) return 'Задача уже существует';
-        if(this.findByPriority(priority)) return 'Такой приоритет существует';
+    update: function(updateTask) {
+        if(!this.findById(updateTask.id)) return 'Задача не найдена';
+        if(this.findByTitle(updateTask.title)) return 'Задача уже существует';
+        if(this.findByPriority(updateTask.priority)) return 'Такой приоритет существует';
 
         this.toDoList.map(obj => {
-            if(obj.id == id) {
-                obj.title = title,
-                obj.priority = priority
+            if(obj.id == updateTask.id) {
+                obj.title = updateTask.title,
+                obj.priority = updateTask.priority
             }
         });
 
@@ -57,10 +52,10 @@ const toDo = {
     }
 }
 
-console.log(toDo.add('Помыть посуду', 1));
-console.log(toDo.add('Пойти гулять', 5));
-console.log(toDo.add('Убраться', 3));
+console.log(toDo.add({title: 'Помыть посуду', id: ++countId, priority: 1}));
+console.log(toDo.add({title: 'Пойти гулять', id: ++countId, priority: 5}));
+console.log(toDo.add({title: 'Убраться', id: ++countId, priority: 3}));
 console.log(toDo.remove(4));
-console.log(toDo.update('Лучше отдохнуть', 6, 2));
+console.log(toDo.update({title: 'Лучше отдохнуть', id: 2, priority: 6}));
 toDo.sort();
 console.log(toDo.toDoList)
