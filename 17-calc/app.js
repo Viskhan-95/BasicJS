@@ -1,35 +1,55 @@
 "use strict"
 
+function getInputValues() {
+    const leftValue = document.querySelector('.input-panel__left').value;
+    const rightValue = document.querySelector('.input-panel__right').value;
+    return [leftValue, rightValue];
+}
+
 function check() {
-    if(document.querySelector('.input-panel__left').value == '') return false;
-    if(document.querySelector('.input-panel__right').value == '') return false;
-    return true;
+    const [leftValue, rightValue] = getInputValues();
+    return leftValue !== '' && rightValue !== '';
 }
 
 function clean() {
-    document.querySelector('.input-panel__left').value = '';
-    document.querySelector('.input-panel__right').value = '';
+    document.querySelectorAll('.input-panel__left, .input-panel__right').forEach(input => input.value = '');
     document.querySelector('.error').style.display = 'none';
 }
 
-function mathOperations(operation) {
-    if(!check()) {
-        document.querySelector('.error').style.display = 'block'
-        return;
-    } else {
-        const num1 = Number(document.querySelector('.input-panel__left').value);
-        const num2 = Number(document.querySelector('.input-panel__right').value);
+function displayResult(result) {
+    document.querySelector('.output-panel').innerText = result;
+}
+
+function error(text) {
+    document.querySelector('.error').innerText = text;
+    document.querySelector('.error').style.display = 'block';
+}
+
+document.querySelector('.math-operation').addEventListener('click', function(e) {
+    if(e.target.classList.contains('operation-btn')) {
+        if(!check()) {
+            error('заполните все поля');
+            return;
+        }
+
+        let res;
+        const [leftValue, rightValue] = getInputValues();
+        const num1 = Number(leftValue);
+        const num2 = Number(rightValue);
+        const operation = e.target.getAttribute('data-operation');
 
         switch (operation) {
-            case '+' : document.querySelector('.output-panel').innerText = (num1 + num2);
+            case '+' : res = num1 + num2;
                 break;
-            case '-' : document.querySelector('.output-panel').innerText = (num1 - num2);
+            case '-' : res = num1 - num2;
                 break;
-            case '*' : document.querySelector('.output-panel').innerText = (num1 * num2);
+            case '*' : res = num1 * num2;
                 break;
-            case '/' : document.querySelector('.output-panel').innerText = (num1 / num2);
+            case '/' : res = num2 !== 0 ? num1 / num2 : '';
+            break;
         }
-        
-        clean();
+        displayResult(res);
+
+        res !== '' ? clean() : clean() & error('нельзя делить на ноль');
     }
-}
+})

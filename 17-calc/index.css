@@ -52,10 +52,7 @@ main {
     margin: 50px 0 30px;
 }
 
-.math-operation__addition,
-.math-operation__subtraction,
-.math-operation__multiplication,
-.math-operation__division
+.operation-btn
  {
     width: 40px;
     height: 40px;
